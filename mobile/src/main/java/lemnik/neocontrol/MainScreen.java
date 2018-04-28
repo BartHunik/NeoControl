@@ -1,6 +1,7 @@
 package lemnik.neocontrol;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class MainScreen extends AppCompatActivity {
 
@@ -18,14 +21,39 @@ public class MainScreen extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        FloatingActionButton fabPlus = (FloatingActionButton) findViewById(R.id.fabPlus);
+        fabPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                ProgressBar pbBlaas = (ProgressBar) findViewById(R.id.pbBlaas) ;
+                pbBlaas.incrementProgressBy(20);
             }
         });
+        FloatingActionButton fabMinus = (FloatingActionButton) findViewById(R.id.fabMinus);
+        fabMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProgressBar pbBlaas = (ProgressBar) findViewById(R.id.pbBlaas) ;
+                pbBlaas.incrementProgressBy(-50);
+            }
+        });
+        new CountDownTimer(8000000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                TextView tvRemaining = (TextView) findViewById(R.id.tvRemaining);
+                long iHour = millisUntilFinished / 3600000;
+                long iMinute = (millisUntilFinished - iHour * 3600000) / 60000;
+                long iSecond = (millisUntilFinished - (iHour * 3600000 + iMinute * 60000)) / 1000;
+
+                tvRemaining.setText(String.format("%02d:%02d:%02d", iHour, iMinute, iSecond));
+            }
+
+            public void onFinish() {
+                TextView tvRemaining = (TextView) findViewById(R.id.tvRemaining);
+                tvRemaining.setText("Leeg Blaas!");
+            }
+        }.start();
     }
 
     @Override
