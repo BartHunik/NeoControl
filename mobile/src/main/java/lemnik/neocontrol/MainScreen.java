@@ -1,5 +1,7 @@
 package lemnik.neocontrol;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +19,10 @@ public class MainScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Declare SharedPreferences object to read and store persistent AppData
+        SharedPreferences spAppData = this.getSharedPreferences("lemnik.neocontrol", Context.MODE_PRIVATE);
+
+        // Set contentview with toolbar and 2 buttons
         setContentView(R.layout.activity_main_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -38,6 +44,8 @@ public class MainScreen extends AppCompatActivity {
                 pbBlaas.incrementProgressBy(-50);
             }
         });
+
+        // Add Countdowntimer to show time left for full blatter
         new CountDownTimer(8000000, 1000) {
 
             public void onTick(long millisUntilFinished) {
